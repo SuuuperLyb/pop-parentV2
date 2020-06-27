@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TBrandMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TBrand">
+        <id column="b_id" property="bId" />
+        <result column="b_name" property="bName" />
+        <result column="b_logo" property="bLogo" />
+        <result column="b_describe" property="bDescribe" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        b_id, b_name, b_logo, b_describe
+    </sql>
+
+</mapper>

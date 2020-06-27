@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TDiscountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TDiscount">
+        <id column="d_id" property="dId" />
+        <result column="d_starttime" property="dStarttime" />
+        <result column="d_endtime" property="dEndtime" />
+        <result column="d_count" property="dCount" />
+        <result column="d_sill" property="dSill" />
+        <result column="c_id" property="cId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        d_id, d_starttime, d_endtime, d_count, d_sill, c_id
+    </sql>
+
+</mapper>

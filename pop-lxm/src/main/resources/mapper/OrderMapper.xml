@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.lxm.dao.OrderMapper">
+
+    <resultMap id="orderResultMap" type="com.offway.lxm.entity.Order">
+        <id column="o_id" property="oId" />
+        <result column="g_id" property="gId" />
+        <result column="i_imgurl" property="iImgurl" />
+        <result column="t_goods_name" property="tGoodsName" />
+        <result column="t_goods_cur_price" property="tGoodsCurPrice" />
+        <result column="ud_id" property="udId" />
+        <result column="c_id" property="cId" />
+        <result column="o_num" property="oNum" />
+        <result column="o_type" property="oType" />
+        <result column="o_goods_num" property="oGoodsNum" />
+        <result column="o_create_time" property="oCreateTime" />
+        <result column="o_final_time" property="oFinalTime" />
+        <result column="o_total_money" property="oTotalMoney" />
+        <result column="o_actual_money" property="oActualMoney" />
+        <result column="o_status" property="oStatus" />
+    </resultMap>
+    <!--查看所有订单-->
+    <select id="getall" parameterType="int" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.u_id=#{uId} and o.o_status=1
+    </select>
+
+    <!--查看所有待支付订单-->
+    <select id="nopay" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.u_id=#{uId} and o.o_type=1 and o.o_status=1
+    </select>
+
+    <!--查看所有待发货订单-->
+    <select id="noshipment" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.u_id=#{uId} and o.o_type=2 and o.o_status=1
+    </select>
+
+    <!--查看所有待收货订单-->
+    <select id="noreceive" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.u_id=#{uId} and o.o_type=3 and o.o_status=1
+    </select>
+    <!--查看所有待评价订单-->
+    <select id="nocomment" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.u_id=#{uId} and o.o_type=4 and o.o_status=1
+    </select>
+
+
+
+</mapper>

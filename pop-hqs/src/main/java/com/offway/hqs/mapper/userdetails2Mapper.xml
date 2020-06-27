@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.offway.hqs.dao.TUserDetails2Mapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.hqs.dto.TUserDetailsDto">
+        <result column="u_id" property="uId" />
+        <result column="ud_name" property="udName" />
+        <result column="ud_sex" property="udSex" />
+        <result column="ud_brithday" property="udBrithday" />
+        <result column="ud_height" property="udHeight" />
+        <result column="ud_haardurl" property="udHaardurl" />
+        <result column="ud_weight" property="udWeight" />
+        <result column="ud_create_time" property="udCreateTime" />
+    </resultMap>
+
+
+<update id="updateUserDetails" parameterType="com.offway.hqs.dto.TUserDetailsDto">
+         update t_user_details set ud_name = #{udName}, ud_sex = #{udSex} ,
+         ud_brithday = #{udBrithday}, ud_height = #{udHeight},ud_weight = #{udWeight}, ud_create_time = #{udCreateTime}
+         where u_id = #{uid}
+</update>
+    <insert id="insertUserDetails">
+        insert into t_food(u_id,ud_name, ud_sex, ud_brithday, ud_height, ud_haardurl,ud_weight,ud_create_time) values
+            #{uid}, #{udName}, #{udSex},  #{udBrithday}, #{udHeight}, #{udHaardurl}, #{udWeight}, #{udCreateTime}
+    </insert>
+</mapper>
+

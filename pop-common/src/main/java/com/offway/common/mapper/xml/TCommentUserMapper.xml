@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TCommentUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TCommentUser">
+        <id column="c_comment_id" property="cCommentId" />
+        <result column="u_id" property="uId" />
+        <result column="c_comment_date" property="cCommentDate" />
+        <result column="c_comment_content" property="cCommentContent" />
+        <result column="c_isvalid" property="cIsvalid" />
+        <result column="goods_id" property="goodsId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        c_comment_id, u_id, c_comment_date, c_comment_content, c_isvalid, goods_id
+    </sql>
+
+</mapper>

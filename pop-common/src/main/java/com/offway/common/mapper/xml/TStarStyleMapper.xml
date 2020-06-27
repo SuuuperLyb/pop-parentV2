@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TStarStyleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TStarStyle">
+        <id column="star_style_id" property="starStyleId" />
+        <result column="star_id" property="starId" />
+        <result column="style_desc" property="styleDesc" />
+        <result column="like_num" property="likeNum" />
+        <result column="style_id" property="styleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        star_id, style_desc, star_style_id, like_num, style_id
+    </sql>
+
+</mapper>

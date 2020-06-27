@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TSectypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TSectype">
+        <id column="t_sectype_id" property="tSectypeId" />
+        <result column="t_sectype_name" property="tSectypeName" />
+        <result column="t_firsttype_id" property="tFirsttypeId" />
+        <result column="t_sectype_pic" property="tSectypePic" />
+        <result column="t_sectype_description" property="tSectypeDescription" />
+        <result column="t_sectype_isvalid" property="tSectypeIsvalid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        t_sectype_id, t_sectype_name, t_firsttype_id, t_sectype_pic, t_sectype_description, t_sectype_isvalid
+    </sql>
+
+</mapper>

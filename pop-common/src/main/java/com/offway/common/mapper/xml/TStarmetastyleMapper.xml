@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TStarmetastyleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TStarmetastyle">
+        <result column="style_id" property="styleId" />
+        <result column="star_id" property="starId" />
+        <result column="heat" property="heat" />
+        <result column="good_id" property="goodId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        style_id, star_id, heat, good_id
+    </sql>
+
+</mapper>

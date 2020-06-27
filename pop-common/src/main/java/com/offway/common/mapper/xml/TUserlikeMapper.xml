@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TUserlikeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TUserlike">
+        <id column="l_id" property="lId" />
+        <result column="u_id" property="uId" />
+        <result column="g_id" property="gId" />
+        <result column="store_id" property="storeId" />
+        <result column="star_id" property="starId" />
+        <result column="l_create_time" property="lCreateTime" />
+        <result column="l_status" property="lStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        l_id, u_id, g_id, store_id, star_id, l_create_time, l_status
+    </sql>
+
+</mapper>

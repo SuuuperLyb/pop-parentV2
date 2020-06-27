@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TAdminMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TAdmin">
+        <id column="a_id" property="aId" />
+        <result column="a_password" property="aPassword" />
+        <result column="a_paynum" property="aPaynum" />
+        <result column="s_id" property="sId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a_id, a_password, a_paynum, s_id
+    </sql>
+
+</mapper>

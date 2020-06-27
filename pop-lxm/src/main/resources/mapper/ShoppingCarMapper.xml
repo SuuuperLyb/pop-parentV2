@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.lxm.dao.ShoppingCarMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="getallResultMap" type="com.offway.lxm.entity.ShoppingCar">
+        <id column="sc_id" property="scId" />
+        <result column="sc_allmoney" property="scAllmoney" />
+        <result column="sc_goodsnum" property="scGoodsnum" />
+        <result column="goods_id" property="tGoodsId" />
+        <result column="t_goods_name" property="tGoodsName" />
+        <result column="t_goods_price" property="tGoodsPrice" />
+        <result column="t_goods_discount" property="tGoodsDiscount" />
+        <result column="t_goods_cur_price" property="tGoodsCurPrice" />
+        <result column="i_imgurl" property="iImgurl" />
+    </resultMap>
+    <!--查询购物车中所有商品信息-->
+    <select id="selectAll" parameterType="int"  resultMap="getallResultMap">
+        select c.sc_id, c.sc_allmoney, c.sc_goodsnum, c.goods_id,d.t_goods_name,
+        d.t_goods_price,d.t_goods_discount,d.t_goods_cur_price,m.i_imgurl
+        from t_shopping_car c
+        left join t_goods_detail d on c.goods_id=d.t_goods_id
+        left join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and c.u_id=#{uid}
+    </select>
+
+
+    <!--修改购物车商品数量-->
+    <update id="updatenum">
+        update t_shopping_car set sc_goodsnum=#{gNum} where sc_id=#{scId}
+    </update>
+
+    <!--查询当前该商品的商品库存-->
+    <select id="selectgoodsCount" parameterType="int" resultType="int">
+        select d.t_goods_stock from t_shopping_car c
+        inner join t_goods_detail d on d.t_goods_id=c.goods_id
+        where c.sc_id=#{scId}
+    </select>
+</mapper>

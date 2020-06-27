@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.offway.hqs.dao.TUserDiscount2Mapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TDiscount">
+        <id column="d_id" property="dId" />
+        <result column="d_starttime" property="dStarttime" />
+        <result column="d_endtime" property="dEndtime" />
+        <result column="d_count" property="dCount" />
+        <result column="d_sill" property="dSill" />
+        <result column="c_id" property="cId" />
+    </resultMap>
+    <select id="selectUserdicountByphone" resultMap="com.offway.common.entity.TDiscount">
+    select td.* from t_discount td INNER JOIN t_user_discount ud on td.d_id=ud.d_id where ud.u_phone=#{phone}
+    </select>
+
+    <update id="updateFood" parameterType="com.elmei.hungry.dto.FoodDto">
+        update t_food set name = #{name} where id = #{id}
+    </update>
+
+    <select id="selectFoodLikeTop" resultType="com.elmei.hungry.dto.FoodLikeDto">
+        select f.*, fl.likes from t_food f inner join
+        (select count(*) likes, fid from t_userlike group by fid) fl on f.id = fl.fid
+        order by likes desc limit 10
+    </select>
+
+    <!-- 添加food集合 -->
+    <insert id="insertBatch">
+        insert into t_food(name, picurl, info, ctime, tags) values
+        <foreach collection="list" separator="," open="(" close=")">
+            #{name}, #{picurl}, #{info}, now(), #{tags}
+        </foreach>
+    </insert>
+
+    <!-- 根据食物的id修改食物的名字 -->
+    <update id="updateFood" parameterType="com.elmei.hungry.dto.FoodDto">
+        update t_food set name = #{name} where id = #{id}
+    </update>
+
+    <!-- 根据用户的id查询用户7天没吃过的食物
+        datediff(curdate(), ctime) >= 7 表示当前日期-数据库中存储的日期大于或等于7
+     -->
+    <select id="selectByUid" resultType="com.elmei.hungry.entity.food.TFood">
+        select * from t_food where id not in (
+        select fid from t_userfood where uid = #{uid} and datediff(curdate(), ctime) >= 7)
+    </select>
+
+    <!--
+         t_food: f
+         t_userfood: uf
+         根据用户的uid查询用户吃的什么食物，根据时间降序排列
+    -->
+    <select id="selectUserEat" resultType="com.elmei.hungry.entity.food.TFood">
+        select f.* from t_userfood uf left join t_food f on uf.fid = f.id
+        where uf.uid = #{uid}
+        order by uf.ctime desc;
+    </select>
+</mapper>

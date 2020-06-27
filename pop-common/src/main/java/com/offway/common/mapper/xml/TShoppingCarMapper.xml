@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TShoppingCarMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TShoppingCar">
+        <id column="sc_id" property="scId" />
+        <result column="sc_allmoney" property="scAllmoney" />
+        <result column="sc_goodsnum" property="scGoodsnum" />
+        <result column="u_id" property="uId" />
+        <result column="goods_id" property="goodsId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sc_id, sc_allmoney, sc_goodsnum, u_id, goods_id
+    </sql>
+
+</mapper>

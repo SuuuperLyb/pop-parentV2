@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TGoodimgMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TGoodimg">
+        <id column="i_id" property="iId" />
+        <result column="i_sort" property="iSort" />
+        <result column="i_mainimg" property="iMainimg" />
+        <result column="i_imgurl" property="iImgurl" />
+        <result column="goods_id" property="goodsId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        i_id, i_sort, i_mainimg, i_imgurl, goods_id
+    </sql>
+
+</mapper>

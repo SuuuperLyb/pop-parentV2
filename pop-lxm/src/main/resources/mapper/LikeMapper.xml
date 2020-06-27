@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.lxm.dao.LikeMapper">
+
+
+    <resultMap id="goodsResultMap" type="com.offway.lxm.entity.TUserlikeGoods">
+        <id column="l_id" property="lId" />
+        <result column="g_id" property="gId" />
+        <result column="t_goods_name" property="tGoodsName" />
+        <result column="i_imgurl" property="iImgurl" />
+        <result column="l_create_time" property="lCreateTime" />
+        <result column="l_status" property="lStatus" />
+    </resultMap>
+    <!--查询用户喜欢的商品-->
+    <select id="selectgoods" resultMap="goodsResultMap">
+        select l.l_id,l.g_id,d.t_goods_name,m.i_imgurl,l.l_create_time,l.l_status
+        from t_userlike l
+        left join t_goods_detail d on l.g_id=d.t_goods_id
+        left join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and l.u_id=#{uId} and l.g_id is not null and l.l_status=1
+    </select>
+
+
+    <resultMap id="storesResultMap" type="com.offway.lxm.entity.TUserlikeGoods">
+        <id column="l_id" property="lId" />
+        <result column="store_id" property="sId" />
+        <result column="s_img" property="sImg" />
+        <result column="s_name" property="sName" />
+        <result column="s_logo" property="sLogo" />
+        <result column="l_create_time" property="lCreateTime" />
+        <result column="l_status" property="lStatus" />
+    </resultMap>
+    <!--查询用户喜欢的店铺-->
+    <select id="selectstores" parameterType="int" resultMap="storesResultMap">
+        select l.l_id,l.store_id,s.s_name,s.s_img,s.s_logo,l.l_create_time,l.l_status
+        from t_userlike l
+        left join t_store s on l.store_id=s.s_id
+        where l.u_id=#{uid} and l.store_id is not null and l.l_status=1
+    </select>
+
+
+
+    <resultMap id="starstyleResultMap" type="com.offway.lxm.entity.TUserlikeStarStyle">
+        <id column="l_id" property="lId" />
+        <result column="star_id" property="starStyleId" />
+        <result column="starimg_url" property="starimgUrl" />
+        <result column="star_name" property="starName" />
+        <result column="l_create_time" property="lCreateTime" />
+        <result column="l_status" property="lStatus" />
+    </resultMap>
+    <!--查询用户喜欢的明星-->
+    <select id="selectstar" parameterType="java.util.ArrayList" resultMap="starstyleResultMap">
+        select u.l_id,u.star_id,u.l_create_time,u.l_status,a.star_name,p.starimg_url
+        from  t_userlike u
+        inner join  t_star_style l on u.star_id=l.star_style_id
+        inner join t_star a on l.star_id=a.id
+        inner join t_style_photos p on p.stat_style_id=l.star_style_id
+        where l.star_style_id in
+        ((select u.star_id
+        from t_userlike u where u.u_id=#{uid})) and u.l_status=1
+    </select>
+
+
+
+</mapper>

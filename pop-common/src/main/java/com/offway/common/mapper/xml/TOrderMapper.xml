@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TOrder">
+        <id column="o_id" property="oId" />
+        <result column="u_id" property="uId" />
+        <result column="g_id" property="gId" />
+        <result column="ud_id" property="udId" />
+        <result column="c_id" property="cId" />
+        <result column="o_num" property="oNum" />
+        <result column="o_type" property="oType" />
+        <result column="o_goods_num" property="oGoodsNum" />
+        <result column="o_create_time" property="oCreateTime" />
+        <result column="o_final_time" property="oFinalTime" />
+        <result column="o_total_money" property="oTotalMoney" />
+        <result column="o_actual_money" property="oActualMoney" />
+        <result column="o_status" property="oStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        o_id, u_id, g_id, ud_id, c_id, o_num, o_type, o_goods_num, o_create_time, o_final_time, o_total_money, o_actual_money, o_status
+    </sql>
+
+</mapper>

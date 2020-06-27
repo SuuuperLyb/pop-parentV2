@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TUserAddressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TUserAddress">
+        <id column="ua_id" property="uaId" />
+        <result column="ua_name" property="uaName" />
+        <result column="ua_phone" property="uaPhone" />
+        <result column="ua_province" property="uaProvince" />
+        <result column="ua_city" property="uaCity" />
+        <result column="ua_district" property="uaDistrict" />
+        <result column="ua_description" property="uaDescription" />
+        <result column="ua_status" property="uaStatus" />
+        <result column="u_id" property="uId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ua_id, ua_name, ua_phone, ua_province, ua_city, ua_district, ua_description, ua_status, u_id
+    </sql>
+
+</mapper>

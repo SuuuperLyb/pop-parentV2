@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.common.mapper.TStoreMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TStore">
+        <id column="s_id" property="sId" />
+        <result column="s_logo" property="sLogo" />
+        <result column="s_describe" property="sDescribe" />
+        <result column="s_img" property="sImg" />
+        <result column="b_id" property="bId" />
+        <result column="s_name" property="sName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        s_id, s_logo, s_describe, s_img, b_id, s_name
+    </sql>
+
+</mapper>
