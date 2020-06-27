@@ -1,8 +1,7 @@
 package com.offway.lxm.service;
 
 import com.offway.common.entity.R;
-import com.offway.lxm.dto.DelManyOrderDto;
-import com.offway.lxm.dto.DelOneOrderDto;
+import com.offway.lxm.dto.*;
 
 /**
  * 用户订单详情模块
@@ -54,6 +53,39 @@ public interface TOrderService {
      */
     R delmany(DelManyOrderDto delManyOrderDto);
 
+    /**
+     * 修改待支付订单状态
+     * @param updateOrderDto
+     * @return
+     */
+    R updatenopay(UpdateOrderDto updateOrderDto);
 
+    /**
+     * 把待发货订单修改为待收货订单
+     * @param updateOrderDto
+     * @return
+     */
+    R updatenoshipment(UpdateOrderDto updateOrderDto);
 
+    /**
+     * 把待收货订单修改为待评价订单
+     * @param updateOrderDto
+     * @return
+     */
+    R updatenoreceive(UpdateOrderDto updateOrderDto);
+
+    /**
+     * 发表评价
+     * 同时把待评价订单修改为已评价订单
+     * @param orderCommitDto
+     * @return
+     */
+    R updatenocomment(OrderCommitDto orderCommitDto);
+
+    /**
+     * 查看当前订单的订单详情
+     * @param getOrderDetailDto
+     * @return
+     */
+    R getorderdetail(GetOrderDetailDto getOrderDetailDto);
 }
