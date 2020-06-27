@@ -27,8 +27,8 @@ public class GoodDetailController {
      * @return com.offway.common.entity.R
      **/
     @GetMapping("/good/detail")
-    public R showDetail(@RequestParam(name = "goodId") String goodId){
-        return null;
+    public R showDetail(@RequestParam(name = "goodId") int goodId,@RequestParam(name = "token",required = false)String token){
+        return goodDetailService.show(goodId,token);
     }
 
     /**
@@ -39,12 +39,12 @@ public class GoodDetailController {
      * @return com.offway.common.entity.R
      **/
     @PostMapping("/good/addLike")
-    public R addLike(@RequestParam(name = "goodId") String goodId,String token){
-        return null;
+    public R addLike(@RequestParam(name = "goodId") int goodId,String token){
+        return goodDetailService.addLike(goodId,token);
     }
 
     @PostMapping("/good/addCar")
-    public R addCar(@RequestParam(name = "goodId") String goodId,String token){
-        return null;
+    public R addCar(@RequestParam(name = "goodId") int goodId,String token){
+        return goodDetailService.addCar(goodId,token);
     }
 }
