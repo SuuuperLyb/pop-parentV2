@@ -97,7 +97,7 @@ public class TStarServiceImpl implements TStarService {
 //                jedisCore.del("firstStarList");
 //                return Rutil.Ok();
                 String jsonStr = jedisCore.getVal("firstStarList");
-                Page<StarInfo> page = (Page<StarInfo>)JSONObject.parse(jsonStr);
+                Page<StarInfo> page = JSONObject.parseObject(jsonStr,Page.class);
                 return Rutil.Ok(page);
             }else {//缓存中不存在，去数据库中查询并添加到缓存中
 //            tStarService.getMainStarInfo();

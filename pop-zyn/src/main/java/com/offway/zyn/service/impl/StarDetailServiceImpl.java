@@ -68,10 +68,10 @@ public class StarDetailServiceImpl implements StarDetailService {
                     tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                     //放到redis中
                     jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
-                    return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                    return Rutil.Ok(tUserlike);
                 }
                 //如果正是想要的数据
-                return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                return Rutil.Ok(tUserlike);
             }else {//如果不存在
                 TUserlike tUserlike = new TUserlike();
                 tUserlike.setlCreateTime(LocalDate.now());
@@ -82,7 +82,7 @@ public class StarDetailServiceImpl implements StarDetailService {
                 tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                 //放到redis中
                 jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
-                return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                return Rutil.Ok(tUserlike);
             }
         }else {//如果未登录
             return  Rutil.err("未登录");
@@ -131,7 +131,8 @@ public class StarDetailServiceImpl implements StarDetailService {
     public R showDetail(int starStyleId) {
         boolean isExist = jedisCore.isExist("starStyleDEtail"+starStyleId);
         if(isExist){//如果存在
-            return Rutil.Ok(jedisCore.getVal("starStyleDEtail"+starStyleId));
+            StarStyleDetail starStyleDetail = JSONObject.parseObject(jedisCore.getVal("starStyleDEtail"+starStyleId),StarStyleDetail.class);
+            return Rutil.Ok(starStyleDetail);
         }else {//如果不存在，转到数据库查询并添加到缓存中
             //查询风格的详情
             TStarStyle tStarStyle = tStarStyleMapper.selectOne(new QueryWrapper<TStarStyle>().eq("star_style_id",starStyleId));
@@ -148,7 +149,7 @@ public class StarDetailServiceImpl implements StarDetailService {
             StarStyleDetail starStyleDetail = new StarStyleDetail(tStarStyle,star,tStore,good,list);
             //写回缓存中
             jedisCore.set("starStyleDEtail",1*24*60*60,JSONObject.toJSONString(starStyleDetail));
-            return Rutil.Ok(JSONObject.toJSONString(starStyleDetail));
+            return Rutil.Ok(starStyleDetail);
         }
     }
 }

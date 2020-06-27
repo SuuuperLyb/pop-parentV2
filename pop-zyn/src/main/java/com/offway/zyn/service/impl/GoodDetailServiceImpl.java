@@ -77,7 +77,7 @@ public class GoodDetailServiceImpl implements GoodDetailService {
                         tUserlikeMapper.insert(tUserlike1);//插入该对象
                         //回写到缓存中
                         jedisCore.set(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
-                        return Rutil.Ok(JSONObject.toJSONString(tUserlike1));
+                        return Rutil.Ok(tUserlike1);
                     }else {//如果存在
                         return Rutil.err("已经添加到收藏！");
                     }
@@ -93,7 +93,7 @@ public class GoodDetailServiceImpl implements GoodDetailService {
                 tUserlikeMapper.insert(tUserlike1);//插入该对象
                 //回写到缓存中
                 jedisCore.set(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
-                return Rutil.Ok(JSONObject.toJSONString(tUserlike1));
+                return Rutil.Ok(tUserlike1);
             }
         }else{//如果没有登录
             return Rutil.err("请登录");
