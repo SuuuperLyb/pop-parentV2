@@ -73,6 +73,34 @@
         where m.i_mainimg=1 and o.u_id=#{uId} and o.o_type=4 and o.o_status=1
     </select>
 
+    <!--把待支付订单修改为待发货订单-->
+    <update id="updatenopay" parameterType="int" >
+        update t_order set o_type=2 where o_id=#{oId}
+    </update>
 
+    <!--把待发货订单修改为待收货订单-->
+    <update id="updatenoshipment" parameterType="int" >
+        update t_order set o_type=3 where o_id=#{oId}
+    </update>
 
+    <!--把待收货订单修改为待评价订单-->
+    <update id="updatenoreceive" parameterType="int" >
+        update t_order set o_type=4 where o_id=#{oId}
+    </update>
+
+    <!--把待评价订单改为已评价订单-->
+    <update id="updatenocomment" parameterType="int" >
+        update t_order set o_type=0 where o_id=#{oId}
+    </update>
+
+    <!--查看当前订单的订单详情-->
+    <select id="getorderdetail" resultMap="orderResultMap">
+        select o.o_id,o.g_id,o.ud_id,o.c_id,o.o_num,o.o_type,o.o_goods_num,
+        o.o_create_time,o.o_final_time,o.o_total_money,o.o_actual_money,o.o_status,
+        d.t_goods_name,d.t_goods_cur_price,m.i_imgurl
+        from t_order o
+        inner join t_goods_detail d on o.g_id=d.t_goods_id
+        inner join t_goodimg m on d.t_goods_id=m.goods_id
+        where m.i_mainimg=1 and o.o_id=#{oId}
+    </select>
 </mapper>

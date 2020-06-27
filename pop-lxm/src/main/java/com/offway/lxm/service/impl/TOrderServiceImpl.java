@@ -3,19 +3,24 @@ package com.offway.lxm.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.offway.common.conf.RedisKeyConfig;
 import com.offway.common.entity.R;
+import com.offway.common.entity.TCommentUser;
+import com.offway.common.entity.TOrder;
 import com.offway.common.entity.TUser;
+import com.offway.common.mapper.TCommentUserMapper;
 import com.offway.common.mapper.TOrderMapper;
 import com.offway.common.three.JedisCore;
 import com.offway.common.util.Rutil;
-import com.offway.lxm.dto.DelManyOrderDto;
-import com.offway.lxm.dto.DelOneOrderDto;
+import com.offway.lxm.dto.*;
 import com.offway.lxm.entity.Order;
 import com.offway.lxm.dao.OrderMapper;
 import com.offway.lxm.service.TOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -31,6 +36,8 @@ public class TOrderServiceImpl implements TOrderService {
     private OrderMapper orderMapper;
     @Resource
     private TOrderMapper tOrderMapper;
+    @Resource
+    private TCommentUserMapper tCommentUserMapper;
     /**
      * 查看所有订单
      * @param token
@@ -144,6 +151,105 @@ public class TOrderServiceImpl implements TOrderService {
             }else {
                 return Rutil.err("删除失败");
             }
+        }
+    }
+
+    /**
+     * 修改待支付订单状态
+     * @param updateOrderDto
+     * @return
+     */
+    @Override
+    public R updatenopay(UpdateOrderDto updateOrderDto) {
+        if(jedisCore.isExist(RedisKeyConfig.LOGIN_USER+updateOrderDto.getToken())==false){
+            return Rutil.err("请登录");
+        }else {
+            if(orderMapper.updatenopay(updateOrderDto.getoId())>0){
+                return Rutil.Ok();
+            }else{
+                return Rutil.err("支付失败");
+            }
+        }
+    }
+
+    /**
+     * 把待发货订单修改为待收货订单
+     * @param updateOrderDto
+     * @return
+     */
+    @Override
+    public R updatenoshipment(UpdateOrderDto updateOrderDto) {
+        if(jedisCore.isExist(RedisKeyConfig.LOGIN_USER+updateOrderDto.getToken())==false){
+            return Rutil.err("请登录");
+        }else {
+            if(orderMapper.updatenoshipment(updateOrderDto.getoId())>0){
+                return Rutil.Ok();
+            }else{
+                return Rutil.err("支付失败");
+            }
+        }
+    }
+
+    /**
+     * 把待收货订单修改为待评价订单
+     * @param updateOrderDto
+     * @return
+     */
+    @Override
+    public R updatenoreceive(UpdateOrderDto updateOrderDto) {
+        if(jedisCore.isExist(RedisKeyConfig.LOGIN_USER+updateOrderDto.getToken())==false){
+            return Rutil.err("请登录");
+        }else {
+            if(orderMapper.updatenoreceive(updateOrderDto.getoId())>0){
+                return Rutil.Ok();
+            }else{
+                return Rutil.err("支付失败");
+            }
+        }
+    }
+
+    /**
+     * 发表评价
+     * 同时把待评价订单修改为已评价订单
+     * @param orderCommitDto
+     * @return
+     */
+    @Override
+    @Transactional//开启事务
+    public R updatenocomment(OrderCommitDto orderCommitDto) {
+        if(jedisCore.isExist(RedisKeyConfig.LOGIN_USER+orderCommitDto.getToken())==false){
+            return Rutil.err("请登录");
+        }else {
+            TUser user = JSON.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+orderCommitDto.getToken()), TUser.class);
+            //根据订单id找到商品id
+            TOrder tOrder=tOrderMapper.selectById(orderCommitDto.getoId());
+            TCommentUser commentUser=new TCommentUser();
+            commentUser.setuId(user.getuId());
+            commentUser.setcCommentDate(LocalDate.now());
+            commentUser.setcCommentContent(orderCommitDto.getCommentContent());
+            commentUser.setcIsvalid(1);
+            commentUser.setGoodsId(tOrder.getgId());
+            //向评论表插入数据，并且改变订单的状态
+            if(tCommentUserMapper.insert(commentUser)>0&&orderMapper.updatenocomment(orderCommitDto.getoId())>0){
+                return Rutil.Ok();
+            }else{
+                return Rutil.err("发表评论失败");
+            }
+        }
+    }
+
+    /**
+     * 查看当前订单的订单详情
+     * @param getOrderDetailDto
+     * @return
+     */
+    @Override
+    public R getorderdetail(GetOrderDetailDto getOrderDetailDto) {
+        if(jedisCore.isExist(RedisKeyConfig.LOGIN_USER+getOrderDetailDto.getToken())==false){
+            return Rutil.err("请登录");
+        }else {
+            Order order=orderMapper.getorderdetail(getOrderDetailDto.getoId());
+            return null;
         }
     }
 }

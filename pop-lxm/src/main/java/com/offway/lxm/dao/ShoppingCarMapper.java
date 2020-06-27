@@ -19,7 +19,7 @@ public interface ShoppingCarMapper {
      * @param gNum
      * @return
      */
-    int updatenum(@Param("scId") int scId,@Param("gNum") int gNum);
+    int updatenum(@Param("scId") int scId, @Param("gNum") int gNum);
 
     /**
      * 查询当前该商品的库存
