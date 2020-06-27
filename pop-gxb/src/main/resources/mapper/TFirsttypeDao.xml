@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.popgxb.dao.TFirsttypeDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TFirsttype">
+        <id column="t_firsttype_id" property="tFirsttypeId" />
+        <result column="t_firsttype_name" property="tFirsttypeName" />
+        <result column="t_firsttype_isvalid" property="tFirsttypeIsvalid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+<!--    <sql id="Base_Column_List">-->
+<!--        t_firsttype_id, t_firsttype_name, t_firsttype_isvalid-->
+<!--    </sql>-->
+
+    <!-- 查询商品的一级名称的列表信息 -->
+    <select id="selectGoodsDetailFirsttype" resultMap="BaseResultMap">
+        select * from t_firsttype
+    </select>
+
+    <!-- 删除指定商品一级名称信息 -->
+    <delete id="deleteGoodsDetailFirsttype">
+        delete from t_firsttype where t_firsttype_id = #{tFirsttypeId}
+    </delete>
+
+    <!-- 添加商品的一级级别 -->
+    <insert id="insertGoodsFirsttype" parameterType="com.offway.common.entity.TFirsttype">
+        insert into t_firsttype(t_firsttype_name, t_firsttype_isvalid) values(#{tFirsttypeName}, #{tFirsttypeIsvalid})
+    </insert>
+</mapper>

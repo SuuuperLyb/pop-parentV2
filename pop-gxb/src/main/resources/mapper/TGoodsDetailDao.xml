@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.popgxb.dao.TGoodsDetailDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TGoodsDetail">
+        <id column="t_goods_id" property="tGoodsId" />
+        <result column="t_goods_name" property="tGoodsName" />
+        <result column="t_goods_engname" property="tGoodsEngname" />
+        <result column="t_goods_size" property="tGoodsSize" />
+        <result column="t_goods_price" property="tGoodsPrice" />
+        <result column="t_goods_discount" property="tGoodsDiscount" />
+        <result column="t_goods_cur_price" property="tGoodsCurPrice" />
+        <result column="t_goods_stock" property="tGoodsStock"/>
+        <result column="t_goods_sales" property="tGoodsSales" />
+        <result column="t_store_id" property="tStoreId" />
+        <result column="t_goods_sort" property="tGoodsSort" />
+        <result column="t_goods_rank" property="tGoodsRank" />
+        <result column="t_sectype_id" property="tSectypeId" />
+        <result column="t_goods_isvalid" property="tGoodsIsvalid" />
+        <result column="t_goods_color" property="tGoodsColor" />
+        <result column="t_goods_time" property="tCreatTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+<!--    <sql id="Base_Column_List">-->
+<!--        t_goods_id, t_goods_name, t_goods_engname, t_goods_size, t_goods_price, t_goods_discount, t_goods_cur_price, t_goods_sales, t_store_id, t_goods_sort, t_goods_rank, t_sectype_id, t_goods_isvalid-->
+<!--    </sql>-->
+
+    <!-- 通过商品的id修改指定的商品信息 -->
+    <update id="updateGoodsDetailByGid" parameterType="com.offway.popgxb.dto.UpdateGoodsDetailDto">
+        update t_goods_detail set t_goods_name = #{tGoodsName}, t_goods_engname = #{tGoodsEngname}, t_goods_size = #{tGoodsSize}, t_goods_price = #{tGoodsPrice}, t_goods_discount = #{tGoodsDiscount},
+                                  t_goods_cur_price = #{tGoodsCurPrice}, t_goods_stock = #{tGoodsStock}, t_goods_sales = #{tGoodsSales}, t_goods_sort = #{tGoodsSort}, t_goods_rank = #{tGoodsRank}, t_sectype_id = #{tSectypeId}, t_goods_isvalid = #{tGoodsIsvalid}, t_goods_color = #{tGoodsColor}, t_creat_time = #{tCreatTime} where t_goods_id = #{tGoodsId}
+    </update>
+
+    <!-- 添加商品信息 -->
+    <insert id="insertGoodsDetail" parameterType="com.offway.popgxb.dto.UpdateGoodsDetailDto">
+        insert into t_goods_detail(t_goods_id, t_goods_name, t_goods_engname, t_goods_size, t_goods_price, t_goods_discount, t_goods_cur_price, t_goods_stock, t_goods_sales, t_store_id, t_goods_sort, t_goods_rank, t_sectype_id, t_goods_isvalid, t_goods_color, t_creat_time)
+        values(#{tGoodsId}, #{tGoodsName}, #{tGoodsEngname}, #{tGoodsSize}, #{tGoodsPrice}, #{tGoodsDiscount}, #{tGoodsCurPrice}, #{tGoodsStock}, #{tGoodsSales}, #{tStoreId}, #{tGoodsSort}, #{tGoodsRank}, #{tSectypeId}, #{tGoodsIsvalid}, #{tGoodsColor}, #{tCreatTime})
+    </insert>
+
+    <!-- 通过t_sectype_id分组查询商品信息 -->
+    <select id="selectGoodsDetailBySectype" resultType="int">
+        SELECT COUNT(1) from t_goods_detail where t_sectype_id = #{tSectypeId} GROUP BY t_sectype_id
+    </select>
+
+    <!-- 根据二级商品的ID查询商品的详细信息 -->
+    <select id="selectGoodsDetailByGsectype" resultMap="BaseResultMap">
+        select * from t_goods_detail where t_sectype_id = #{tSectypeId}
+    </select>
+</mapper>
