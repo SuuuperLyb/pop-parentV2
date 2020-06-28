@@ -21,9 +21,12 @@ import com.offway.zyn.dto.HotStarInf;
 import com.offway.zyn.dto.StarInfo;
 import com.offway.zyn.mapper.StarInfoMapper;
 import com.offway.zyn.service.TStarService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisSentinelPool;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -57,11 +60,13 @@ public class TStarServiceImpl implements TStarService {
      **/
     @Override
     public R getHotStyle() {
-        boolean isExit = jedisCore.isExist("hotStarInfo");//判断缓存是否有明星穿搭的轮播图信息
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
+        boolean isExit = jedis.exists("hotStarInfo");//判断缓存是否有明星穿搭的轮播图信息
         if(isExit){//如果缓存中存在
 //            jedisCore.del("hotStarInfo");
 //            return Rutil.Ok();
-            String jsonStr = jedisCore.getVal("hotStarInfo");
+            String jsonStr = jedis.get("hotStarInfo");
             JSONArray starInfsarr = JSONArray.parseArray(jsonStr);
             List<HotStarInf> starInfs = starInfsarr.toJavaList(HotStarInf.class);
             return Rutil.Ok(starInfs);
@@ -77,7 +82,7 @@ public class TStarServiceImpl implements TStarService {
                 //加入到结果集中
                 starInfs.add(hsi);
             }
-            jedisCore.set("hotStarInfo",24*68*60, JSONObject.toJSONString(starInfs));
+            jedis.setex("hotStarInfo",24*68*60, JSONObject.toJSONString(starInfs));
             return Rutil.Ok(starInfs);
         }
     }
@@ -91,12 +96,14 @@ public class TStarServiceImpl implements TStarService {
      **/
     @Override
     public R listAll(int startPage,int pageSize) {
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
         if(startPage==1){//如果是首页，去缓存查，如果没有就加入
-            boolean isExit = jedisCore.isExist("firstStarList");//判断缓存是否有明星穿搭的轮播图信息
+            boolean isExit = jedis.exists("firstStarList");//判断缓存是否有明星穿搭的轮播图信息
             if(isExit){//如果缓存中存在,对于缓存来说，第一页的数据是热数据，让在缓存中，后面的分页数据可以不放在缓存中
 //                jedisCore.del("firstStarList");
 //                return Rutil.Ok();
-                String jsonStr = jedisCore.getVal("firstStarList");
+                String jsonStr = jedis.get("firstStarList");
                 Page<StarInfo> page = JSONObject.parseObject(jsonStr,Page.class);
                 return Rutil.Ok(page);
             }else {//缓存中不存在，去数据库中查询并添加到缓存中
@@ -104,7 +111,7 @@ public class TStarServiceImpl implements TStarService {
 //                IPage<TStarStyle> firstPage = tssm.selectPage(new Page<>(1,pageSize),new QueryWrapper<TStarStyle>().orderByDesc("like_num"));
                 Page<StarInfo> firstPage = new Page(1,pageSize);
                 firstPage.setRecords(starInfoMapper.getStarInfoByPage(firstPage));
-                jedisCore.set("firstStarList",24*68*60, JSONObject.toJSONString(firstPage));
+                jedis.setex("firstStarList",24*68*60, JSONObject.toJSONString(firstPage));
                 return Rutil.Ok(firstPage);
             }
         }else{//冷数据去数据库查

@@ -10,6 +10,7 @@ import com.offway.common.util.Rutil;
 import com.offway.zyn.dto.GoodDetail;
 import com.offway.zyn.service.GoodDetailService;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -58,14 +59,16 @@ public class GoodDetailServiceImpl implements GoodDetailService {
 
     @Override
     public R addLike(int goodid, String token) {
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
         //先检查是否登录
-        boolean isLogin = jedisCore.isExist(RedisKeyConfig.LOGIN_USER+token);
+        boolean isLogin = jedis.exists(RedisKeyConfig.LOGIN_USER+token);
         if(isLogin){//如果登陆了
-            TUser user = JSONObject.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+token),TUser.class);
+            TUser user = JSONObject.parseObject(jedis.get(RedisKeyConfig.LOGIN_USER+token),TUser.class);
             int userId = user.getuId();//获取用户id
-            boolean islike = jedisCore.isExist(userId+"like");
+            boolean islike = jedis.exists(userId+"like");
             if(islike){//如果缓存中存在
-                TUserlike tUserlike = JSONObject.parseObject(jedisCore.getVal(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
+                TUserlike tUserlike = JSONObject.parseObject(jedis.get(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
                 if(tUserlike.getgId()!=goodid) {//如果不相等
                     //转向数据库去查
                     TUserlike tUserlike1 = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId).eq("g_id",goodid));
@@ -76,7 +79,7 @@ public class GoodDetailServiceImpl implements GoodDetailService {
                         tUserlike1.setlStatus(1);
                         tUserlikeMapper.insert(tUserlike1);//插入该对象
                         //回写到缓存中
-                        jedisCore.set(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
+                        jedis.setex(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
                         return Rutil.Ok(tUserlike1);
                     }else {//如果存在
                         return Rutil.err("已经添加到收藏！");
@@ -92,7 +95,7 @@ public class GoodDetailServiceImpl implements GoodDetailService {
                 tUserlike1.setlStatus(1);
                 tUserlikeMapper.insert(tUserlike1);//插入该对象
                 //回写到缓存中
-                jedisCore.set(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
+                jedis.setex(userId+"like",1*24*60*60,JSONObject.toJSONString(tUserlike1));
                 return Rutil.Ok(tUserlike1);
             }
         }else{//如果没有登录
@@ -102,10 +105,12 @@ public class GoodDetailServiceImpl implements GoodDetailService {
 
     @Override
     public R addCar(int goodid, String token) {
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
         //先检查是否登录
-        boolean isLogin = jedisCore.isExist(RedisKeyConfig.LOGIN_USER+token);
+        boolean isLogin = jedis.exists(RedisKeyConfig.LOGIN_USER+token);
         if(isLogin){//如果登陆了
-            TUser user = JSONObject.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+token),TUser.class);
+            TUser user = JSONObject.parseObject(jedis.get(RedisKeyConfig.LOGIN_USER+token),TUser.class);
             int userId = user.getuId();//获取用户id
             TShoppingCar tShoppingCar = tShoppingCarMapper.selectOne(new QueryWrapper<TShoppingCar>().eq("u_id",userId).eq("goods_id",goodid));
             TGoodsDetail tGoodsDetail = tGoodsDetailMapper.selectOne(new QueryWrapper<TGoodsDetail>().eq("t_goods_id",goodid));

@@ -5,6 +5,8 @@ import com.offway.lxm.dto.DeleteShoppingCarDto;
 import com.offway.lxm.dto.DelmanyDto;
 import com.offway.lxm.dto.UpdateGoodsNumDto;
 import com.offway.lxm.service.TShoppingCarService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +21,9 @@ import javax.annotation.Resource;
  */
 @RestController
 @CrossOrigin
-public class TShoppingCarController {
-    @Resource
+public class TShoppingCarControllerlxm {
+    @Autowired
+    @Qualifier("TShoppingCarServiceImpllxm")
     private TShoppingCarService tShoppingCarService;
 
     /**

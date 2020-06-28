@@ -28,11 +28,11 @@ import java.util.List;
  * 用户订单详情模块
  * @Date 2020/6/24 0024
  */
-@Service
+@Service("TOrderServiceImpllxm")
 public class TOrderServiceImpl implements TOrderService {
     @Resource
     private JedisCore jedisCore;
-    @Autowired(required = false)
+    @Resource
     private OrderMapper orderMapper;
     @Resource
     private TOrderMapper tOrderMapper;

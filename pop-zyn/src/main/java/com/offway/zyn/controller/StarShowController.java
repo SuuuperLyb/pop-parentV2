@@ -38,7 +38,7 @@ public class StarShowController {
      * @return com.offway.common.entity.R
      **/
     @GetMapping("/star/listAll")
-    public R showAll(@RequestParam(name = "startPage",defaultValue = "1") int startPage,@RequestParam(name = "pageSize",defaultValue = "6")int pageSize){
+    public R showAll(@RequestParam(name = "startPage",defaultValue = "1") int startPage,@RequestParam(name = "pageSize",defaultValue = "4")int pageSize){
         return tStarService.listAll(startPage,pageSize);
     }
 

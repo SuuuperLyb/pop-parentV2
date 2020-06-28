@@ -3,6 +3,8 @@ package com.offway.lxm.controller;
 import com.offway.common.entity.R;
 import com.offway.lxm.dto.DeleteUserlikeDto;
 import com.offway.lxm.service.TUserlikeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +20,9 @@ import javax.annotation.Resource;
  */
 @RestController
 @CrossOrigin
-public class TUserlikeController {
-    @Resource
+public class TUserlikeControllerlxm {
+    @Autowired
+    @Qualifier("TUserlikeServiceImpllxm")
     private TUserlikeService userlikeService;
 
 

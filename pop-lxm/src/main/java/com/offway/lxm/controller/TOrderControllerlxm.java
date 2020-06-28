@@ -3,6 +3,8 @@ package com.offway.lxm.controller;
 import com.offway.common.entity.R;
 import com.offway.lxm.dto.*;
 import com.offway.lxm.service.TOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +19,9 @@ import javax.annotation.Resource;
  */
 @RestController
 @CrossOrigin
-public class TOrderController {
-    @Resource
+public class TOrderControllerlxm {
+    @Autowired
+    @Qualifier("TOrderServiceImpllxm")
     private TOrderService orderService;
 
     /**

@@ -1,14 +1,28 @@
 package com.offway.common.three;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 public class JedisCore {
 
     private Jedis jedis;
+    private JedisPool jedisPool;
+    private String password;
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    public Jedis getJedis(){
+        return jedisPool.getResource();
+    }
 
     public JedisCore(String host,int port,String password){
-        JedisPool jedisPool = new JedisPool(host,port);
+        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        this.password = password;
+        poolConfig.setMaxTotal(1000);
+        jedisPool = new JedisPool(poolConfig,host,port);
         jedis = jedisPool.getResource();
         jedis.auth(password);
     }
