@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TUserDiscount2Mapper extends BaseMapper<TDiscount> {
 //根据phone查询优惠券详情
-    List<TDiscount> selectUserdicountByphone(String phone);
+    List<TDiscount> selectUserdicountByid(int uid);
 
 }

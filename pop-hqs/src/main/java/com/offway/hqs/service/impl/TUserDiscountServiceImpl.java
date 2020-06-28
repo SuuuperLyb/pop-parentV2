@@ -27,9 +27,11 @@ public class TUserDiscountServiceImpl extends ServiceImpl<TUserDiscountMapper, T
     private JedisCore jedisCore;
 
     @Override
-    public R userdicountByphone(String token) {
+    public R userdicountByid(String token) {
         //josn转换成logintokendato
         LoginTokenDto loginTokenDto=JSON.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+token),LoginTokenDto.class);
-        return  Rutil.Ok(tUserDiscount2Mapper.selectUserdicountByphone(loginTokenDto.getPhone()));
+        System.out.println(loginTokenDto.getUid());
+
+        return  Rutil.Ok(tUserDiscount2Mapper.selectUserdicountByid(loginTokenDto.getUid()));
     }
 }

@@ -3,10 +3,8 @@ package com.offway.popgxb.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.offway.common.entity.R;
-import com.offway.common.entity.TFirsttype;
-import com.offway.common.entity.TGoodsDetail;
-import com.offway.common.entity.TSectype;
+import com.offway.common.entity.*;
+import com.offway.common.mapper.TGoodimgMapper;
 import com.offway.common.mapper.TGoodsDetailMapper;
 import com.offway.common.util.Rutil;
 import com.offway.popgxb.dao.TFirsttypeDao;
@@ -16,8 +14,8 @@ import com.offway.popgxb.dto.GoodsDetailDto;
 import com.offway.popgxb.dto.GoodsSortDto;
 import com.offway.popgxb.dto.UpdateGoodsDetailDto;
 import com.offway.popgxb.service.ITGoodsDetailService;
-import com.sun.crypto.provider.TlsMasterSecretGenerator;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -42,6 +40,10 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     private TFirsttypeDao tFirsttypeDao;
     @Resource
     private TSectypeDao tSectypeDao;
+    @Resource
+    private TGoodimgMapper tGoodimgMapper;
+    @Resource
+    private ResourceossServiceImpl resourceossServiceimpl;
 
     /**
      * 查询所有商品信息
@@ -58,7 +60,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 通过商品名字模糊查询商品信息集合
      *
-     * @param goodsDetailDto
+     * @param goodsDetailDto 商品名称的数据传输类
      * @return
      */
     @Override
@@ -119,7 +121,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 根据商品id查询商品的信息
      *
-     * @param gid
+     * @param gid 商品的id
      * @return
      */
     @Override
@@ -132,7 +134,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 通过商品的id修改指定的商品信息
      *
-     * @param updateGoodsDetailDto
+     * @param updateGoodsDetailDto 商品的数据传输类
      * @return
      */
     @Override
@@ -145,7 +147,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 通过商品的ID删除商品
      *
-     * @param gid
+     * @param gid 商品的id
      * @return
      */
     @Override
@@ -156,21 +158,32 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     }
 
     /**
-     * 添加商品信息
+     * 添加商品信息，并添加对应的图片信息
      *
-     * @param updateGoodsDetailDto
+     * @param updateGoodsDetailDto 数据传输对象类
+     * @param file                 要上传的图片文件
      * @return
      */
     @Override
-    public R insertGoodsDetail(UpdateGoodsDetailDto updateGoodsDetailDto) {
+    public R insertGoodsDetail(UpdateGoodsDetailDto updateGoodsDetailDto, MultipartFile file) {
         int i = tGoodsDetailDao.insertGoodsDetail(updateGoodsDetailDto);
+        String pictureUrl = (String) resourceossServiceimpl.sendFile(file).getObject();
 
-        return Rutil.Ok(i);
+        TGoodimg tGoodimgDto1 = new TGoodimg();
+        tGoodimgDto1.setiSort(updateGoodsDetailDto.gettGoodsRank());
+        tGoodimgDto1.setiMainimg(1);
+        tGoodimgDto1.setiImgurl(pictureUrl);
+        tGoodimgDto1.setGoodsId(updateGoodsDetailDto.gettGoodsId());
+
+        int j = tGoodimgMapper.insert(tGoodimgDto1);
+
+        return Rutil.Ok(j);
     }
 
     /**
      * 通过t_sectype_id查询该二级商品的数量
      *
+     * @param tSectypeId 商品的二级级别id
      * @return
      */
     @Override
@@ -183,7 +196,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 根据二级商品的ID查询商品的详细信息
      *
-     * @param tSectypeId
+     * @param tSectypeId 商品的二级级别id
      * @return
      */
     @Override
@@ -208,7 +221,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 删除商品的一级名称信息
      *
-     * @param tFirsttypeId
+     * @param tFirsttypeId 商品的一级级别id
      * @return
      */
     @Override
@@ -219,9 +232,9 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     }
 
     /**
-     * 添加商品的一级级别
+     * 添加商品的一级级别信息
      *
-     * @param tFirsttype
+     * @param tFirsttype 商品一级级别信息对象
      * @return
      */
     @Override
@@ -234,6 +247,7 @@ public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TG
     /**
      * 根据商品一级级别id查询商品二级级别信息
      *
+     * @param tFirsttypeId 商品的一级级别id
      * @return
      */
     @Override

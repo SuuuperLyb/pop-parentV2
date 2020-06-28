@@ -2,6 +2,7 @@ package com.offway.hqs.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.offway.hqs.dto.TSmsLogDto;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>

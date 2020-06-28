@@ -14,9 +14,8 @@ import java.time.LocalDate;
  * @author LYB
  * @since 2020-06-23
  */
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class TUserDetailsDto{
 
     /**
@@ -58,6 +57,13 @@ public class TUserDetailsDto{
      */
     private LocalDate udCreateTime;
 
+    public String getUdHaardurl() {
+        return udHaardurl;
+    }
+
+    public void setUdHaardurl(String udHaardurl) {
+        this.udHaardurl = udHaardurl;
+    }
 
     public Integer getuId() {
         return uId;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.dyh.dao.UserDetailsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TUserDetails">
+        <id column="ud_id" property="udId" />
+        <result column="u_id" property="uId" />
+        <result column="ud_name" property="udName" />
+        <result column="ud_haardurl" property="udHaardurl" />
+        <result column="ud_sex" property="udSex" />
+        <result column="ud_brithday" property="udBrithday" />
+        <result column="ud_height" property="udHeight" />
+        <result column="ud_weight" property="udWeight" />
+        <result column="ud_create_time" property="udCreateTime" />
+        <result column="ud_is_deleted" property="udIsDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ud_id, u_id, ud_name, ud_haardurl, ud_sex, ud_brithday, ud_height, ud_weight, ud_create_time, ud_is_deleted
+    </sql>
+<!--  查询当天新增用户数量  -->
+    <select id="selectUserDay" resultType="int">
+        select count(ud_id) from t_user_details where to_days(ud_create_time) = to_days(now())
+    </select>
+<!--  查询近七天  -->
+    <select id="selectUserWeek" resultType="int">
+        select count(ud_id) from t_user_details where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(ud_create_time);
+    </select>
+</mapper>

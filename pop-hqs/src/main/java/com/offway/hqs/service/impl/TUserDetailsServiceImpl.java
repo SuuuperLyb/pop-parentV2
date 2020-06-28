@@ -2,7 +2,6 @@ package com.offway.hqs.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.offway.common.entity.R;
 import com.offway.common.entity.TUser;
 import com.offway.common.entity.TUserDetails;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service
 public class TUserDetailsServiceImpl implements ITUserDetailsService {
@@ -36,13 +34,13 @@ public class TUserDetailsServiceImpl implements ITUserDetailsService {
      * 查询用户信息
      * */
     @Override
-    public R selectUserdicountByphone(String token) {
+    public R selectUserdicountByid(String token) {
         //令牌模板
         LoginTokenDto loginTokenDto = JSON.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER + token), LoginTokenDto.class);
         //查询用户
-        TUser tUser = tUserMapper.selectOne(new QueryWrapper<TUser>().eq("u_phone", loginTokenDto.getPhone()));
+       // TUser tUser = tUserMapper.selectOne(new QueryWrapper<TUser>().eq("u_id", loginTokenDto.getUid()));
         //根据uid查询详情
-        TUserDetails userDetails = tUserDetailsMapper.selectOne(new QueryWrapper<TUserDetails>().eq("u_id", tUser.getuId()));
+        TUserDetails userDetails = tUserDetailsMapper.selectOne(new QueryWrapper<TUserDetails>().eq("u_id", loginTokenDto.getUid()));
 
 
         return Rutil.Ok(userDetails);

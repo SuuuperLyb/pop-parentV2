@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.dyh.dao.GoodsDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TGoodsDetail">
+        <id column="t_goods_id" property="tGoodsId" />
+        <result column="t_goods_name" property="tGoodsName" />
+        <result column="t_goods_engname" property="tGoodsEngname" />
+        <result column="t_goods_size" property="tGoodsSize" />
+        <result column="t_goods_price" property="tGoodsPrice" />
+        <result column="t_goods_discount" property="tGoodsDiscount" />
+        <result column="t_goods_cur_price" property="tGoodsCurPrice" />
+        <result column="t_goods_stock" property="tGoodsStock" />
+        <result column="t_goods_sales" property="tGoodsSales" />
+        <result column="t_store_id" property="tStoreId" />
+        <result column="t_goods_sort" property="tGoodsSort" />
+        <result column="t_goods_rank" property="tGoodsRank" />
+        <result column="t_sectype_id" property="tSectypeId" />
+        <result column="t_goods_isvalid" property="tGoodsIsvalid" />
+        <result column="t_goods_color" property="tGoodsColor" />
+        <result column="t_creat_time" property="tCreatTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        t_goods_id, t_goods_name, t_goods_engname, t_goods_size, t_goods_price, t_goods_discount, t_goods_cur_price, t_goods_stock, t_goods_sales, t_store_id, t_goods_sort, t_goods_rank, t_sectype_id, t_goods_isvalid,
+        t_goods_color,t_creat_time
+    </sql>
+<!--  查询有效的商品数量  -->
+    <select id="goodsNum" resultType="int">
+        select count(t_goods_id) from t_goods_detail where t_goods_isvalid=1
+    </select>
+<!--  查询无效的商品数量  -->
+    <select id="goodsNull" resultType="int">
+        select count(t_goods_id) from t_goods_detail where t_goods_isvalid=0
+    </select>
+<!--  查询库存少于50的商品数量   -->
+    <select id="selectGoodsFew" resultType="int">
+        select count(t_goods_id) from t_goods_detail where t_goods_stock &lt; 50
+    </select>
+</mapper>

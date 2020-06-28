@@ -8,7 +8,7 @@ import com.offway.hqs.dto.TUserDetailsDto;
 public interface ITUserDetailsService{
 
     //查询用户详情
-    R selectUserdicountByphone(String token);
+    R selectUserdicountByid(String token);
     //修改用户详情
     R updateUserDetails(TUserDetailsDto tUserDetailsDto);
     //新增用户详情
