@@ -13,11 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class SmsController {
     @Autowired
     private ITSmsLogService itSmsLogService;
-
+/*
+* 发送注册验证码
+* */
     @GetMapping("api/sms/sendrcode.do")
     public R sendRcode(String phone) {
         return itSmsLogService.sendRegisterCode(phone);
     }
+    /*
+    * 验证注册验证码
+    * */
 
     @PostMapping("api/sms/checkrcode.do")
     public R checkRCode(@RequestBody UserRegisterCodeDto codeDto) {

@@ -249,7 +249,7 @@ public class TOrderServiceImpl implements TOrderService {
             return Rutil.err("请登录");
         }else {
             Order order=orderMapper.getorderdetail(getOrderDetailDto.getoId());
-            return null;
+            return Rutil.Ok(order);
         }
     }
 }

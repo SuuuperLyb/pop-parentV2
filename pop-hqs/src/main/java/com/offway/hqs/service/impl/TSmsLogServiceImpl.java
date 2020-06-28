@@ -14,12 +14,14 @@ import com.offway.hqs.util.NumRandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 
 @Service
 public class TSmsLogServiceImpl extends ServiceImpl<TSmsLogMapper,TSmsLogDto> implements ITSmsLogService {
-    @Autowired
+
+    @Resource
     private JedisCore jedisCore;
 
     @Autowired
@@ -40,8 +42,8 @@ public class TSmsLogServiceImpl extends ServiceImpl<TSmsLogMapper,TSmsLogDto> im
         // 2.发送短信
         SmsCore.sendRCode(phone, code);
         // 3.将验证码和用户手机信息记录到数据库
+        System.out.println("验证码"+code);
         TSmsLogDto log = new TSmsLogDto(phone, "注册发送验证码：" + code, SmsType.注册验证码.getVal(), LocalDateTime.now());
-        logDao.insert(log);
         // 将产生的6位字符串添加到redis中去,key为 (pop:sms:rcode:+手机号)  值为code字符串   时间为5分钟
         jedisCore.set(RedisKeyConfig.SMS_RCODE + phone, RedisKeyConfig.SMS_RCODE_TIME,String.valueOf(code));
 

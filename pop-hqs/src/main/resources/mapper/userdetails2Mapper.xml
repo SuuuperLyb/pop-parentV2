@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.offway.hqs.dao.TUserDetails2Mapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.hqs.dto.TUserDetailsDto">
+        <result column="u_id" property="uId" />
+        <result column="ud_name" property="udName" />
+        <result column="ud_sex" property="udSex" />
+        <result column="ud_brithday" property="udBrithday" />
+        <result column="ud_height" property="udHeight" />
+        <result column="ud_haardurl" property="udHaardurl" />
+        <result column="ud_weight" property="udWeight" />
+        <result column="ud_create_time" property="udCreateTime" />
+    </resultMap>
+
+
+<update id="updateUserDetails" parameterType="com.offway.hqs.dto.TUserDetailsDto">
+         update t_user_details set ud_name = #{udName}, ud_sex = #{udSex} ,
+         ud_brithday = #{udBrithday}, ud_height = #{udHeight},ud_weight = #{udWeight}, ud_create_time = #{udCreateTime}
+         where u_id = #{uId}
+</update>
+<!--    <insert id="insertUserDetails">-->
+<!--        insert into t_user_details(u_id,ud_name, ud_sex, ud_brithday, ud_height, ud_haardurl,ud_weight,ud_create_time) values-->
+<!--            #{uId}, #{udName}, #{udSex},  #{udBrithday}, #{udHeight}, #{udHaardurl}, #{udWeight}, #{udCreateTime}-->
+<!--    </insert>-->
+    <sql id="key">
+        <!-- 去掉最后一个, -->
+        <trim suffixOverrides=",">
+            <if test="uId!=null">
+                u_id,</if>
+            <if test="udName!=null">
+                ud_name,
+            </if>
+            <if test="udSex!=null">
+                ud_sex,
+            </if>
+            <if test="udBrithday!=null">
+                ud_brithday,</if>
+            <if test="udHeight!=null">
+                ud_height,
+            </if>
+            <if test="udHaardurl!=null">
+                ud_haardurl,
+            </if>
+            <if test="udWeight!=null">
+                ud_weight,
+            </if>
+            <if test="udCreateTime!=null">
+                ud_create_time,
+            </if>
+        </trim>
+    </sql>
+
+    <!-- sql片段对应?,id属性值任意 -->
+    <sql id="value">
+        <!-- 去掉最后一个, -->
+        <trim suffixOverrides=",">
+            <if test="uId!=null">
+                #{uId},
+            </if>
+            <if test="udName!=null">
+                #{udName},
+            </if>
+            <if test="udSex!=null">
+                #{udSex},
+            </if>
+            <if test="udBrithday!=null">
+                #{udBrithday},
+            </if>
+            <if test="udHeight!=null">
+                #{udHeight},
+            </if>
+            <if test="udHaardurl!=null">
+                #{udHaardurl},
+            </if>
+            <if test="udWeight!=null">
+                #{udWeight},
+            </if>
+            <if test="udCreateTime!=null">
+                #{udCreateTime},
+            </if>
+        </trim>
+    </sql>
+    <!-- <include refid="key"/>和<include refid="value"/>表示引用上面定义的sql片段 -->
+    <insert id="insertUserDetails">
+        INSERT INTO t_user_details(<include refid="key"/>) VALUES(<include refid="value"/>)
+    </insert>
+</mapper>
+

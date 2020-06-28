@@ -14,7 +14,6 @@ import com.offway.hqs.service.ITUseraddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 @Service
 public class TUseraddressServiceImpl extends ServiceImpl<TUserAddressMapper, TUserAddress> implements ITUseraddressService {
@@ -22,7 +21,9 @@ public class TUseraddressServiceImpl extends ServiceImpl<TUserAddressMapper, TUs
     private JedisCore jedisCore;
     @Autowired
     private TUserAddressMapper tUserAddressMapper;
-
+/*添加地址
+*
+* */
     @Override
     public R add(TUserAddress tUserAddress) {
 
@@ -32,7 +33,9 @@ public class TUseraddressServiceImpl extends ServiceImpl<TUserAddressMapper, TUs
             return Rutil.err();
         }
     }
-
+/*查询地址
+*
+* */
     @Override
     public R select(String token) {
         TUser user = JSON.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER + token), TUser.class);

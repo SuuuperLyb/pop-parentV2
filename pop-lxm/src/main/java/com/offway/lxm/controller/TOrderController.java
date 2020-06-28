@@ -3,6 +3,7 @@ package com.offway.lxm.controller;
 import com.offway.common.entity.R;
 import com.offway.lxm.dto.*;
 import com.offway.lxm.service.TOrderService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
  * @Date 2020/6/24 0024
  */
 @RestController
+@CrossOrigin
 public class TOrderController {
     @Resource
     private TOrderService orderService;

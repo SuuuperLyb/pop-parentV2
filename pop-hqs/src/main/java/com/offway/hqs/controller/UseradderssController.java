@@ -6,6 +6,8 @@ import com.offway.hqs.service.ITUseraddressService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "地址接口", tags = "地址接口")
@@ -14,10 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class UseradderssController {
     @Autowired
     private ITUseraddressService itUseraddressService;
-    public R add(TUserAddress tUserAddress){ //新增
+/*
+* //新增地址
+*
+* */
+    @PostMapping("api/useradder/add.do")
+    public R add(TUserAddress tUserAddress){
         return itUseraddressService.add(tUserAddress);
     }
-    //新增
 
+
+    /*
+    * //查询地址
+    * */
+    @GetMapping("api/useradder/select.do")
+    public R select(String token){
+     return itUseraddressService.select(token);
+    }
 
 }
