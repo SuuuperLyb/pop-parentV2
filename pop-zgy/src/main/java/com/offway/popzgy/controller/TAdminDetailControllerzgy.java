@@ -4,16 +4,17 @@ import com.offway.common.entity.R;
 import com.offway.popzgy.dto.AdminDto;
 import com.offway.popzgy.service.TAdminDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-public class TAdminDetailController {
+public class TAdminDetailControllerzgy {
 
     @Autowired
+    @Qualifier("adminDetailServicezgy")
     private TAdminDetailService adminDetailService;
+
     @PostMapping ("admin/login.do")
     public R login(@RequestBody AdminDto adminDto){
         return adminDetailService.login(adminDto);

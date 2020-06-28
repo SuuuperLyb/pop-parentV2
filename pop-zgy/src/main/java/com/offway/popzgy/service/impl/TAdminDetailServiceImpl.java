@@ -18,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 
-@Service
+
+@Service("adminDetailServicezgy")
 public class TAdminDetailServiceImpl extends ServiceImpl<TAdmindetailMapper,TAdmindetail> implements TAdminDetailService {
 
-    @Autowired
+    @Resource
     private JedisCore jedisCore;
     @Autowired
     private TAdmindetailMapper admindetailMapper;

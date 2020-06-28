@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("discountServicezgy")
 public class TDiscountServiceImpl extends ServiceImpl<TDiscountMapper, TDiscount> implements TDiscountService {
     @Autowired
     private TDiscountMapper discountMapper;

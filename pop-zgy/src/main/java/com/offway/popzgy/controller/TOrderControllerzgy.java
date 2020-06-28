@@ -9,6 +9,7 @@ import com.offway.common.util.Rutil;
 import com.offway.popzgy.dto.OrderDto;
 import com.offway.popzgy.service.TOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@CrossOrigin
 @RestController
-public class TOrderController {
-    @Autowired
+public class TOrderControllerzgy {
+
+    @Autowired @Qualifier("orderServicezgy")
+
     private TOrderService orderService;
     //查询今日订单数
     @GetMapping("order/todayOrderSum.do")

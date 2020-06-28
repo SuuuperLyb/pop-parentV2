@@ -5,12 +5,14 @@ import com.offway.common.entity.TDiscount;
 import com.offway.common.util.Rutil;
 import com.offway.popzgy.service.TDiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-public class TDiscountController {
+public class TDiscountControllerzgy {
 
-    @Autowired
+    @Autowired @Qualifier("discountServicezgy")
     private TDiscountService discountService;
 
     //添加优惠券
