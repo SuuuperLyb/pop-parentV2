@@ -11,6 +11,7 @@ import com.offway.common.util.Rutil;
 import com.offway.zyn.dto.StarStyleDetail;
 import com.offway.zyn.service.StarDetailService;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -50,14 +51,16 @@ public class StarDetailServiceImpl implements StarDetailService {
      **/
     @Override
     public R addLike(int id, String token) {//id 是明星风格id
-        boolean isLogin = jedisCore.isExist(RedisKeyConfig.LOGIN_USER+token);
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
+        boolean isLogin = jedis.exists(RedisKeyConfig.LOGIN_USER+token);
         if(isLogin){
             //利用token来获取当前用户
-            TUser user = JSONObject.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+token),TUser.class);
+            TUser user = JSONObject.parseObject(jedis.get(RedisKeyConfig.LOGIN_USER+token),TUser.class);
             int userId = user.getuId();//获取用户id
-            boolean isExit = jedisCore.isExist(userId+"like");//从redis中查询是否有该用户的喜欢
+            boolean isExit = jedis.exists(userId+"like");//从redis中查询是否有该用户的喜欢
             if(isExit){//如果存在
-                TUserlike tUserlike = JSONObject.parseObject(jedisCore.getVal(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
+                TUserlike tUserlike = JSONObject.parseObject(jedis.get(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
                 if(tUserlike.getStarId()==null){//如果不是明星风格喜欢
                     //转到数据库插入
                     tUserlike.setlCreateTime(LocalDate.now());
@@ -67,7 +70,7 @@ public class StarDetailServiceImpl implements StarDetailService {
                     tUserlikeMapper.insert(tUserlike);//插入数据
                     tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                     //放到redis中
-                    jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
+                    jedis.setex(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
                     return Rutil.Ok(tUserlike);
                 }
                 //如果正是想要的数据
@@ -81,7 +84,7 @@ public class StarDetailServiceImpl implements StarDetailService {
                 tUserlikeMapper.insert(tUserlike);//插入数据
                 tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                 //放到redis中
-                jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
+                jedis.setex(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
                 return Rutil.Ok(tUserlike);
             }
         }else {//如果未登录
@@ -98,20 +101,22 @@ public class StarDetailServiceImpl implements StarDetailService {
      **/
     @Override
     public R dislike(int id, String token) {
-        boolean isLogin = jedisCore.isExist(RedisKeyConfig.LOGIN_USER+token);
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
+        boolean isLogin = jedis.exists(RedisKeyConfig.LOGIN_USER+token);
         if(isLogin){
             //利用token来获取当前用户
-            TUser user = JSONObject.parseObject(jedisCore.getVal(RedisKeyConfig.LOGIN_USER+token),TUser.class);
+            TUser user = JSONObject.parseObject(jedis.get(RedisKeyConfig.LOGIN_USER+token),TUser.class);
             int userId = user.getuId();//获取用户id
-            boolean isExit = jedisCore.isExist(userId+"like");//从redis中查询是否有该用户的喜欢
+            boolean isExit = jedis.exists(userId+"like");//从redis中查询是否有该用户的喜欢
             boolean falgToDB = false;//转去数据库删除的标志位
             if(isExit){//如果存在
-                TUserlike tUserlike = JSONObject.parseObject(jedisCore.getVal(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
+                TUserlike tUserlike = JSONObject.parseObject(jedis.get(userId+"like"),TUserlike.class);//从redis中获得喜欢的信息
                 if(tUserlike.getStarId()==null){//如果不是明星风格喜欢
                     falgToDB = true;
                 }else {
                     //如果正是想要的数据,删除掉
-                    jedisCore.del(userId + "like");
+                    jedis.del(userId + "like");
                     falgToDB = false;
                 }
             }else {//如果不存在
@@ -129,9 +134,11 @@ public class StarDetailServiceImpl implements StarDetailService {
 
     @Override
     public R showDetail(int starStyleId) {
-        boolean isExist = jedisCore.isExist("starStyleDEtail"+starStyleId);
+        Jedis jedis = jedisCore.getJedis();
+        jedis.auth(jedisCore.getPassword());
+        boolean isExist = jedis.exists("starStyleDEtail"+starStyleId);
         if(isExist){//如果存在
-            StarStyleDetail starStyleDetail = JSONObject.parseObject(jedisCore.getVal("starStyleDEtail"+starStyleId),StarStyleDetail.class);
+            StarStyleDetail starStyleDetail = JSONObject.parseObject(jedis.get("starStyleDEtail"+starStyleId),StarStyleDetail.class);
             return Rutil.Ok(starStyleDetail);
         }else {//如果不存在，转到数据库查询并添加到缓存中
             //查询风格的详情
@@ -148,7 +155,7 @@ public class StarDetailServiceImpl implements StarDetailService {
             //封装查询的对象
             StarStyleDetail starStyleDetail = new StarStyleDetail(tStarStyle,star,tStore,good,list);
             //写回缓存中
-            jedisCore.set("starStyleDEtail",1*24*60*60,JSONObject.toJSONString(starStyleDetail));
+            jedis.setex("starStyleDEtail",1*24*60*60,JSONObject.toJSONString(starStyleDetail));
             return Rutil.Ok(starStyleDetail);
         }
     }

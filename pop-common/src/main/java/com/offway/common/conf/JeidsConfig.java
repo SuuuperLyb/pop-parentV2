@@ -20,7 +20,6 @@ public class JeidsConfig {
     private String pwd;
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public JedisCore creatJedisCore(){
         return new JedisCore(host,port,pwd);
     }
