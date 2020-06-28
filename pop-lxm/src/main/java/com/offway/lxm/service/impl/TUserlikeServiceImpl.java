@@ -26,11 +26,11 @@ import java.util.List;
  * 用户喜欢模块
  * @Date 2020/6/24 0024
  */
-@Service
+@Service("TUserlikeServiceImpllxm")
 public class TUserlikeServiceImpl implements TUserlikeService {
     @Resource
     private JedisCore jedisCore;
-    @Autowired(required = false)
+    @Resource
     private LikeMapper likemapper;
     @Resource
     private TUserlikeMapper userlikeMapper;
