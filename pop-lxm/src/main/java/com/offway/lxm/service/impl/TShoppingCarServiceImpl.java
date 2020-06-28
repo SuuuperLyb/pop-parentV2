@@ -24,11 +24,11 @@ import java.util.List;
  * 用户购物车模块
  * @Date 2020/6/25 0025
  */
-@Service
+@Service("TShoppingCarServiceImpllxm")
 public class TShoppingCarServiceImpl implements TShoppingCarService {
     @Resource
     private JedisCore jedisCore;
-    @Autowired(required = false)
+    @Resource
     private ShoppingCarMapper shoppingCarMapper;
     @Resource
     private TShoppingCarMapper tShoppingCarMapper;

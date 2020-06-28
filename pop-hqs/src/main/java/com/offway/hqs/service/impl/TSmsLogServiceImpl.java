@@ -18,13 +18,13 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 
-@Service
+@Service("tSmsLogServiceImplhqs")
 public class TSmsLogServiceImpl extends ServiceImpl<TSmsLogMapper,TSmsLogDto> implements ITSmsLogService {
 
     @Resource
     private JedisCore jedisCore;
 
-    @Autowired
+    @Resource
     private TSmsLogMapper logDao;
 
     @Override

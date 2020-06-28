@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Service
+@Service("TUserServiceImplhqs")
 public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements ITUserService {
     @Autowired(required = false)
     private TUserMapper tUserMapper;

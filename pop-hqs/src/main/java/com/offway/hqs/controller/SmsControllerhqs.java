@@ -4,14 +4,17 @@ import com.offway.hqs.dto.UserRegisterCodeDto;
 import com.offway.hqs.service.ITSmsLogService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 
 @Api(value = "短信相关接口", tags = "短信接口")
 @RestController
 @CrossOrigin // 解决跨域的问题
-public class SmsController {
+public class SmsControllerhqs {
+
     @Autowired
+    @Qualifier("tSmsLogServiceImplhqs")
     private ITSmsLogService itSmsLogService;
 /*
 * 发送注册验证码

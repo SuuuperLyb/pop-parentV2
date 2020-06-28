@@ -18,9 +18,11 @@ import com.offway.hqs.service.ITResourceossService;
 import com.offway.hqs.three.OssCore;
 import com.offway.hqs.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 
@@ -29,15 +31,15 @@ import java.io.IOException;
  * 对象存储类oss 上传头像
  * </p>
  */
-@Service
+@Service("tResourceossServiceImplhqs")
 public class TResourceossServiceImpl  implements ITResourceossService {
-    @Autowired
+    @Resource
     TUserDetails2Mapper tUserDetails2Mapper;
-    @Autowired
+   @Resource
     private JedisCore jedisCore;
-    @Autowired
+    @Resource
     private TUserMapper tUserMapper;
-    @Autowired
+    @Resource
     private TUserdetailhendurlMapper tUserdetailhendurlMapper;
 
 

@@ -5,14 +5,16 @@ import com.offway.hqs.dto.TUserDetailsDto;
 import com.offway.hqs.service.ITUserDetailsService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "用户详情接口", tags = "用户详情接口")
 @RestController
 @CrossOrigin // 解决跨域的问题
-public class UserDetalisController {
+public class UserDetalisControllerhqs {
 
     @Autowired
+    @Qualifier("TUserDetailsServiceImplhqs")
     private ITUserDetailsService itUserDetailsService;
     //查询用户详情
     @GetMapping("/api/userdetails/selectUserdicountByphone.do")

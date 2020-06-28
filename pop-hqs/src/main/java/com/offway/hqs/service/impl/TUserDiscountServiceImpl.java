@@ -15,15 +15,17 @@ import com.offway.hqs.service.ITUserDiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /*
 * 用户优惠券
 *
 * */
-@Service
+@Service("TUserDiscountServiceImplhqs")
 public class TUserDiscountServiceImpl extends ServiceImpl<TUserDiscountMapper, TUserDiscount> implements ITUserDiscountService {
-    @Autowired
+    @Resource
     private TUserDiscount2Mapper tUserDiscount2Mapper;
-    @Autowired
+    @Resource
     private JedisCore jedisCore;
 
     @Override

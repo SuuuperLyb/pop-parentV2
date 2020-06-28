@@ -6,14 +6,16 @@ import com.offway.hqs.dto.UserDto;
 import com.offway.hqs.service.ITUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @CrossOrigin
 @Api(value = "用户相关接口", tags = "用户相关接口")
-public class UserController {
+public class UserControllerhqs {
     @Autowired
+    @Qualifier("TUserServiceImplhqs")
     private ITUserService itUserService;
 
     /*
