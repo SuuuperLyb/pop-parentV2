@@ -26,7 +26,9 @@ public interface StarInfoMapper extends BaseMapper<StarInfo>{
             "t_style.style_name," +
             "t_style_photos.photo_id," +
             "t_style_photos.create_time," +
-            "t_style_photos.starimg_url " +
+            "t_style_photos.starimg_url," +
+            "t_star_style.like_num," +
+            "t_star_style.style_id " +
             "from t_star,t_style,t_star_style,t_style_photos,t_starmetastyle " +
             "where  t_starmetastyle.star_id=t_star_style.star_id " +
             "and t_starmetastyle.style_id=t_star_style.style_id " +
@@ -42,7 +44,9 @@ public interface StarInfoMapper extends BaseMapper<StarInfo>{
             "t_style.style_name," +
             "t_style_photos.photo_id," +
             "t_style_photos.create_time," +
-            "t_style_photos.starimg_url " +
+            "t_style_photos.starimg_url, " +
+            "t_star_style.like_num," +
+            "t_star_style.style_id " +
             "from t_star,t_style,t_star_style,t_style_photos,t_starmetastyle " +
             "where  t_starmetastyle.star_id=t_star_style.star_id " +
             "and t_starmetastyle.style_id=t_star_style.style_id " +

@@ -8,12 +8,14 @@ import com.offway.common.entity.*;
 import com.offway.common.mapper.*;
 import com.offway.common.three.JedisCore;
 import com.offway.common.util.Rutil;
+import com.offway.zyn.dto.StarStyleDetail;
 import com.offway.zyn.service.StarDetailService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author starzyn
@@ -35,6 +37,10 @@ public class StarDetailServiceImpl implements StarDetailService {
     TStarStyleMapper tStarStyleMapper;
     @Resource
     TStarmetastyleMapper tStarmetastyleMapper;
+    @Resource
+    TGoodsDetailMapper tGoodsDetailMapper;
+    @Resource
+    TStylePhotosMapper tStylePhotosMapper;
     /**
      * @Author starzyn
      * @Description 点击按钮添加喜欢
@@ -62,10 +68,10 @@ public class StarDetailServiceImpl implements StarDetailService {
                     tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                     //放到redis中
                     jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
-                    return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                    return Rutil.Ok(tUserlike);
                 }
                 //如果正是想要的数据
-                return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                return Rutil.Ok(tUserlike);
             }else {//如果不存在
                 TUserlike tUserlike = new TUserlike();
                 tUserlike.setlCreateTime(LocalDate.now());
@@ -76,7 +82,7 @@ public class StarDetailServiceImpl implements StarDetailService {
                 tUserlike = tUserlikeMapper.selectOne(new QueryWrapper<TUserlike>().eq("u_id",userId));//再查询出来
                 //放到redis中
                 jedisCore.set(userId+"like",2*24*60*60,JSONObject.toJSONString(tUserlike));//有效期两天
-                return Rutil.Ok(JSONObject.toJSONString(tUserlike));
+                return Rutil.Ok(tUserlike);
             }
         }else {//如果未登录
             return  Rutil.err("未登录");
@@ -113,7 +119,7 @@ public class StarDetailServiceImpl implements StarDetailService {
             }
             if(falgToDB){
                 //数据库删除
-                tUserlikeMapper.delete(new UpdateWrapper<TUserlike>().eq("u_id",userId));
+                tUserlikeMapper.delete(new UpdateWrapper<TUserlike>().eq("u_id",userId).eq("star_id",id));
             }
             return Rutil.Ok();
         }else {//如果未登录
@@ -125,15 +131,25 @@ public class StarDetailServiceImpl implements StarDetailService {
     public R showDetail(int starStyleId) {
         boolean isExist = jedisCore.isExist("starStyleDEtail"+starStyleId);
         if(isExist){//如果存在
-            return Rutil.Ok(jedisCore.getVal("starStyleDEtail"+starStyleId));
+            StarStyleDetail starStyleDetail = JSONObject.parseObject(jedisCore.getVal("starStyleDEtail"+starStyleId),StarStyleDetail.class);
+            return Rutil.Ok(starStyleDetail);
         }else {//如果不存在，转到数据库查询并添加到缓存中
             //查询风格的详情
             TStarStyle tStarStyle = tStarStyleMapper.selectOne(new QueryWrapper<TStarStyle>().eq("star_style_id",starStyleId));
+            //查询对应的明星风格图片信息
+            List<TStylePhotos> list = tStylePhotosMapper.selectList(new QueryWrapper<TStylePhotos>().eq("stat_style_id",tStarStyle.getStarStyleId()));
             //查询对应的明星信息
             TStar star = tStarMapper.selectOne(new QueryWrapper<TStar>().eq("id",tStarStyle.getStarId()));
-            Object goodId = tStarmetastyleMapper.selectObjs(new QueryWrapper<TStarmetastyle>().eq("star_id",star.getId()).eq("style_id",tStarStyle.getStyleId())).get(0);
-
+            TStarmetastyle tStarmetastyle = tStarmetastyleMapper.selectOne(new QueryWrapper<TStarmetastyle>().eq("star_id",star.getId()).eq("style_id",tStarStyle.getStyleId()));
+            //根据tStarmetastyle获取商品id后查询对应商品
+            TGoodsDetail good = tGoodsDetailMapper.selectOne(new QueryWrapper<TGoodsDetail>().eq("t_goods_id",tStarmetastyle.getGoodId()));
+            //根据查询到的商品获得对应的店铺信息
+            TStore tStore = tStoreMapper.selectOne(new QueryWrapper<TStore>().eq("s_id",good.gettStoreId()));
+            //封装查询的对象
+            StarStyleDetail starStyleDetail = new StarStyleDetail(tStarStyle,star,tStore,good,list);
+            //写回缓存中
+            jedisCore.set("starStyleDEtail",1*24*60*60,JSONObject.toJSONString(starStyleDetail));
+            return Rutil.Ok(starStyleDetail);
         }
-        return null;
     }
 }

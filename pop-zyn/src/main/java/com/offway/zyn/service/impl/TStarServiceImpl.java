@@ -1,5 +1,6 @@
 package com.offway.zyn.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -58,9 +59,12 @@ public class TStarServiceImpl implements TStarService {
     public R getHotStyle() {
         boolean isExit = jedisCore.isExist("hotStarInfo");//判断缓存是否有明星穿搭的轮播图信息
         if(isExit){//如果缓存中存在
-            jedisCore.del("hotStarInfo");
-            return Rutil.Ok();
-//            return Rutil.Ok(jedisCore.getVal("hotStarInfo"));
+//            jedisCore.del("hotStarInfo");
+//            return Rutil.Ok();
+            String jsonStr = jedisCore.getVal("hotStarInfo");
+            JSONArray starInfsarr = JSONArray.parseArray(jsonStr);
+            List<HotStarInf> starInfs = starInfsarr.toJavaList(HotStarInf.class);
+            return Rutil.Ok(starInfs);
         }else {//缓存中不存在，去数据库中查询并添加到缓存中
 //            tStarService.getMainStarInfo();
             List<TStarStyle> tss = tssm.selectList(new QueryWrapper<TStarStyle>().orderByDesc("like_num").last("limit 0,3"));
@@ -74,7 +78,7 @@ public class TStarServiceImpl implements TStarService {
                 starInfs.add(hsi);
             }
             jedisCore.set("hotStarInfo",24*68*60, JSONObject.toJSONString(starInfs));
-            return Rutil.Ok(JSONObject.toJSONString(starInfs));
+            return Rutil.Ok(starInfs);
         }
     }
 
@@ -92,20 +96,22 @@ public class TStarServiceImpl implements TStarService {
             if(isExit){//如果缓存中存在,对于缓存来说，第一页的数据是热数据，让在缓存中，后面的分页数据可以不放在缓存中
 //                jedisCore.del("firstStarList");
 //                return Rutil.Ok();
-                return Rutil.Ok(jedisCore.getVal("firstStarList"));
+                String jsonStr = jedisCore.getVal("firstStarList");
+                Page<StarInfo> page = JSONObject.parseObject(jsonStr,Page.class);
+                return Rutil.Ok(page);
             }else {//缓存中不存在，去数据库中查询并添加到缓存中
 //            tStarService.getMainStarInfo();
 //                IPage<TStarStyle> firstPage = tssm.selectPage(new Page<>(1,pageSize),new QueryWrapper<TStarStyle>().orderByDesc("like_num"));
                 Page<StarInfo> firstPage = new Page(1,pageSize);
                 firstPage.setRecords(starInfoMapper.getStarInfoByPage(firstPage));
                 jedisCore.set("firstStarList",24*68*60, JSONObject.toJSONString(firstPage));
-                return Rutil.Ok(JSONObject.toJSONString(firstPage));
+                return Rutil.Ok(firstPage);
             }
         }else{//冷数据去数据库查
 //            IPage<TStarStyle> firstPage = tssm.selectPage(new Page<TStarStyle>(startPage,pageSize),new QueryWrapper<TStarStyle>().orderByDesc("like_num"));
             Page<StarInfo> page = new Page(startPage,pageSize);
             page.setRecords(starInfoMapper.getStarInfoByPage(page));
-            return Rutil.Ok(JSONObject.toJSONString(page));
+            return Rutil.Ok(page);
         }
     }
 
@@ -121,6 +127,6 @@ public class TStarServiceImpl implements TStarService {
     public R listByName(String starName,int startPage,int pageSize) {
         Page<StarInfo> page = new Page(startPage,pageSize);//创建page对象
         page.setRecords(starInfoMapper.getStarInfoByPageWithName(page,starName));//设置查询信息
-        return Rutil.Ok(JSONObject.toJSONString(page));//json字符串返回给前端
+        return Rutil.Ok(page);//json字符串返回给前端
     }
 }
