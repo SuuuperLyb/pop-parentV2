@@ -10,7 +10,7 @@ import com.offway.dyh.service.IAdminGoodsDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("IAdminGoodsDetailServicedyh")
 public class AdminGoodsDetailServiceImpl extends ServiceImpl<GoodsDetailMapper, TGoodsDetail> implements IAdminGoodsDetailService {
     @Autowired
     private GoodsDetailMapper tGoodsDetailMapper;

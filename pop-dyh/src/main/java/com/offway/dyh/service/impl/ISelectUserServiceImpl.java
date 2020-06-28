@@ -10,7 +10,7 @@ import com.offway.dyh.service.ISelectUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("ISelectUserServicedyh")
 public class ISelectUserServiceImpl extends ServiceImpl<UserDetailsMapper, TUserDetails> implements ISelectUserService {
     @Autowired
     private UserDetailsMapper userDetailsMapper;

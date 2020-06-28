@@ -4,12 +4,16 @@ import com.offway.common.entity.R;
 import com.offway.dyh.service.IAdminGoodsDetailService;
 import com.offway.dyh.service.ISelectUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SelectUserController {
+@CrossOrigin
+public class SelectUserControllerdyh {
     @Autowired
+    @Qualifier("ISelectUserServicedyh")
     private ISelectUserService service;
     /**
      * 查询本日

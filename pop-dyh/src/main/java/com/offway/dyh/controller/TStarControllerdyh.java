@@ -4,17 +4,17 @@ import com.offway.common.entity.R;
 import com.offway.common.entity.TStar;
 import com.offway.dyh.service.ITStarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 明星
  */
 @RestController
-public class TStarController {
+@CrossOrigin
+public class TStarControllerdyh {
     @Autowired
+    @Qualifier("ITStarServicedyh")
     private ITStarService service;
 
     /**

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("TStarmetaStyleServiceImpldyh")
 public class TStarmetaStyleServiceImpl implements ITStarmetaStyleService {
 }

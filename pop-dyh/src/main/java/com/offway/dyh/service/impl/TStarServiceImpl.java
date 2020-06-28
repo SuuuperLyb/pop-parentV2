@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("ITStarServicedyh")
 public class TStarServiceImpl extends ServiceImpl<StarMapper,TStar> implements ITStarService  {
     @Autowired
     private StarMapper starMapper;

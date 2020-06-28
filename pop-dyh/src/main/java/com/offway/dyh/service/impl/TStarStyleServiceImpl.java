@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-@Service
+@Service("ITStarStyleServicedyh")
 public class TStarStyleServiceImpl extends ServiceImpl<StarStyleMapper, TStarStyle> implements ITStarStyleService {
     @Autowired
     private StarStyleMapper starStyleMapper;

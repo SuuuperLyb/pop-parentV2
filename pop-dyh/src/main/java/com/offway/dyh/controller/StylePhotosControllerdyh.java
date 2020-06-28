@@ -3,6 +3,8 @@ package com.offway.dyh.controller;
 import com.offway.common.entity.*;
 import com.offway.dyh.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-public class StylePhotosController {
+@CrossOrigin
+public class StylePhotosControllerdyh {
 
     @Autowired
+    @Qualifier("IStylePhotosServicedyh")
     private IStylePhotosService service;
     /**
      *添加照片明细

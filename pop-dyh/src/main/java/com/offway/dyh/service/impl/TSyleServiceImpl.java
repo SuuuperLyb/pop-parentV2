@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 
-@Service
+@Service("ITStyleServicedyh")
 public class TSyleServiceImpl extends ServiceImpl<StyleMapper, TStyle> implements ITStyleService {
     @Autowired
     private StyleMapper styleMapper;
