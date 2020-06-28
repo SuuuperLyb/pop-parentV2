@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offway.dyh.dao.StarMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.offway.common.entity.TStar">
+        <id column="id" property="id" />
+        <result column="star_name" property="starName" />
+        <result column="star_weardescription" property="starWeardescription" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, star_name, star_weardescription
+    </sql>
+
+</mapper>
