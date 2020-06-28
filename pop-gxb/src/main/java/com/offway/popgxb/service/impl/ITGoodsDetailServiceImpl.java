@@ -29,7 +29,7 @@ import java.util.List;
  * @Version:
  * @Description:
  */
-@Service
+@Service("iTGoodsDetailServiceImplgxb")
 public class ITGoodsDetailServiceImpl extends ServiceImpl<TGoodsDetailMapper, TGoodsDetail> implements ITGoodsDetailService {
 
     @Resource

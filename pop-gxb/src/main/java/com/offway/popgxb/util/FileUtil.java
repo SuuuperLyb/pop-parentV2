@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * @program: HungryApi
  * @description: 截取文件的名字
- * @author: Feri(邢朋辉)
+ * @author: gxb
  * @create: 2020-06-19 10:22
  */
 public class FileUtil {

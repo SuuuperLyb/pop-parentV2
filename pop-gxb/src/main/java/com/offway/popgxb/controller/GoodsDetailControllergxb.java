@@ -9,10 +9,10 @@ import com.offway.popgxb.dto.UpdateGoodsDetailDto;
 import com.offway.popgxb.service.ITGoodsDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.Resource;
 
 /**
  * @PackgeName: com.offway.popgxb.controller
@@ -26,9 +26,10 @@ import javax.annotation.Resource;
 @RestController
 @CrossOrigin // 解决跨域问题
 @Api(tags = "商品相关接口")
-public class GoodsDetailController {
+public class GoodsDetailControllergxb {
 
-    @Resource
+    @Autowired
+    @Qualifier("iTGoodsDetailServiceImplgxb")
     private ITGoodsDetailService itGoodsDetailService;
 
     /**

@@ -28,7 +28,7 @@ import java.util.Calendar;
  * @Version:
  * @Description:
  */
-@Service
+@Service("resourceossServiceImplgxb")
 public class ResourceossServiceImpl extends ServiceImpl<ResourceossDao, TResourceossDto> implements ResourceossService {
 
     @Resource
