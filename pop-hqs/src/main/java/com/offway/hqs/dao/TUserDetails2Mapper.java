@@ -12,5 +12,4 @@ public interface TUserDetails2Mapper extends BaseMapper<TUserDetails> {
     int  updateUserDetails(TUserDetailsDto tUserDetailsDto);
     //添加用户详情
     int insertUserDetails(TUserDetailsDto tUserDetailsDto);
-
 }

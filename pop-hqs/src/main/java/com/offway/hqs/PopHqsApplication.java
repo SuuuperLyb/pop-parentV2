@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.offway.hqs.dao")
 @ComponentScan("com.offway.common.conf")
 @ComponentScan("com.offway.hqs.config")
-public class PopHqsApplicationTests {
+public class PopHqsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PopHqsApplicationTests.class, args);
+        SpringApplication.run(PopHqsApplication.class, args);
     }
 
 }
