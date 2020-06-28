@@ -14,12 +14,14 @@ import com.offway.hqs.service.ITUseraddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 
-@Service
+
+@Service("tUseraddressServiceImplhqs")
 public class TUseraddressServiceImpl extends ServiceImpl<TUserAddressMapper, TUserAddress> implements ITUseraddressService {
-    @Autowired
+    @Resource
     private JedisCore jedisCore;
-    @Autowired
+    @Resource
     private TUserAddressMapper tUserAddressMapper;
 /*添加地址
 *

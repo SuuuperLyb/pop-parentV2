@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-@Service
+@Service("TUserDetailsServiceImplhqs")
 public class TUserDetailsServiceImpl implements ITUserDetailsService {
     @Autowired
     private TUserMapper tUserMapper;
