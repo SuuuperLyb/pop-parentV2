@@ -21,6 +21,7 @@ import com.offway.zyn.dto.HotStarInf;
 import com.offway.zyn.dto.StarInfo;
 import com.offway.zyn.mapper.StarInfoMapper;
 import com.offway.zyn.service.TStarService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
